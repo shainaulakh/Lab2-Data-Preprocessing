@@ -1,5 +1,11 @@
 # Lab 2 - Data Preprocessing
 
+## Student Information
+
+- **Name:** Sukhchain Singh
+- **Student Number:** 9111541
+- **Course:** PROG8245 - Machine Learning Programming
+
 ## Overview
 
 This project was completed for Lab 2 - Tidying, Cleaning, Imputation, and Outlier Detection. The purpose of the lab is to practice preparing real-world datasets for data analysis and machine learning.
