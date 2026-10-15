@@ -55,27 +55,88 @@ The main tasks included:
 
 The `Horsepower` column contained missing values. Median imputation was used in the final cleaned copy because it is less sensitive to unusually high or low values than the mean.
 
-### 4. Diabetes Dataset - Outlier Detection
+## Section 4 - CDC Diabetes Health Indicators
 
-The Pima Indians Diabetes dataset was used to compare different methods of detecting potential outliers.
+In Section 4, I updated the diabetes analysis using the **CDC Diabetes Health Indicators** dataset from the UCI Machine Learning Repository.
 
-The main tasks included:
+Instead of loading only a local CSV file, I accessed the dataset programmatically using the `ucimlrepo` package and dataset ID `891`. This made the data source easier to reproduce and allowed the notebook to retrieve the dataset directly from UCI.
 
-- inspecting numeric features and suspicious zero values;
-- creating box plots;
-- creating a scatter plot;
-- detecting outliers using Z-Scores;
-- detecting outliers using the Interquartile Range (IQR) method;
-- comparing the results of the different detection methods;
-- creating a cleaned copy of the dataset for before-and-after comparison.
+### Data Quality Checks
 
-For the `Insulin` feature, the Z-Score method identified 18 potential outliers using the rule:
+Before performing outlier analysis, I checked:
 
-`|z| > 3`
+- Dataset shape and column names
+- Data types
+- Missing values
+- Duplicate rows
+- Descriptive statistics
 
-The IQR method identified 34 potential outliers.
+These checks helped me understand the structure and quality of the dataset before making any changes.
 
-Outliers were not assumed to be errors automatically. Their meaning and effect on the dataset were considered before treatment.
+### Exploratory Analysis
+
+I used visualizations such as:
+
+- Box plots
+- Scatter plots
+- Histograms
+
+These visualizations helped identify unusual BMI values and understand the relationship between BMI, physical health, and diabetes status.
+
+### Outlier Detection
+
+I used two statistical methods to detect BMI outliers:
+
+- **Z-score**
+- **Interquartile Range (IQR)**
+
+The Z-score method identified **2,963** extreme BMI observations.
+
+The IQR method identified **9,847** possible outliers.
+
+All Z-score outliers were also identified by the IQR method. Because the IQR method was more aggressive, I used the Z-score method for treatment so that fewer potentially valid observations were removed.
+
+After treatment:
+
+- Rows decreased from **253,680** to **250,717**
+- Mean BMI changed from approximately **28.38** to **28.02**
+- BMI standard deviation decreased from approximately **6.61** to **5.61**
+
+This showed that the extreme values were reduced without greatly changing the overall center of the data.
+
+### Feature Engineering
+
+I created a new feature called:
+
+`Health_Risk_Count`
+
+This feature combines the following binary health indicators:
+
+- High blood pressure
+- High cholesterol
+- Smoking
+- Stroke
+- Heart disease or heart attack
+
+The feature represents how many of these selected risk factors are present for each person.
+
+### Health Risk and Diabetes
+
+I compared `Health_Risk_Count` with diabetes status.
+
+The analysis showed that the percentage of people with diabetes increased as the number of selected health risk factors increased.
+
+People with no selected risk factors had the lowest diabetes percentage, while people with more selected risk factors had a much higher diabetes percentage.
+
+This analysis shows an association between the selected health risk factors and diabetes, but it does not prove that the risk factors directly cause diabetes.
+
+### What I Learned
+
+This section helped me understand that outlier detection is not only about removing unusual values.
+
+Different methods can identify different numbers of outliers, so it is important to compare the results and explain why a treatment method was selected.
+
+I also learned how feature engineering can transform multiple existing variables into a new feature that makes patterns in the data easier to understand.
 
 ## Project Structure
 
@@ -115,6 +176,7 @@ The project uses the following main Python libraries:
 - Seaborn
 - Scikit-Learn
 - Jupyter
+- `ucimlrepo` - used to retrieve the CDC Diabetes Health Indicators dataset directly from UCI
 
 The project was completed using Python 3.11.
 
